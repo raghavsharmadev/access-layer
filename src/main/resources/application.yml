@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: access_layer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/access_layer_db
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
