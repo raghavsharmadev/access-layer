@@ -12,7 +12,11 @@ import com.rs.accesslayer.repository.UserRepository;
 public class UserService {
     @Autowired private UserRepository userRepository;
 
-    public User createUser(final User user, final Long tenantId) {
+    public User createUser(final User user, final Long tenantId, final String role) {
+        if(!"ADMIN".equals(role)) {
+            throw new RuntimeException("Access denied: Only ADMIN can create users");
+        }
+
         user.setTenantId(tenantId);
         return userRepository.save(user);
     }
@@ -21,7 +25,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUsersByTenant(final Long tenantId) {
+    public List<User> getUsersByTenant(final Long tenantId, final String role) {
+        if(!"ADMIN".equals(role)) {
+            throw new RuntimeException("Access denied: Only ADMIN can fetch users");
+        }
         return userRepository.findByTenantId(tenantId);
     }
 }

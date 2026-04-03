@@ -17,12 +17,12 @@ public class UserController {
     @Autowired private UserService userService;
 
     @PostMapping(path = "/users")
-    public User createUser(@RequestBody final User user, @RequestHeader("X-Tenant-Id") final Long tenantId) {
-        return userService.createUser(user, tenantId);
+    public User createUser(@RequestBody final User user, @RequestHeader("X-Tenant-Id") final Long tenantId, @RequestHeader("X-Role") final String role) {
+        return userService.createUser(user, tenantId, role);
     }
 
     @GetMapping(path = "/users")
-    public List<User> getAllUsers(@RequestHeader("X-Tenant-Id") final Long tenantId) {
-        return userService.getUsersByTenant(tenantId);
+    public List<User> getAllUsers(@RequestHeader("X-Tenant-Id") final Long tenantId, @RequestHeader("X-Role") final String role) {
+        return userService.getUsersByTenant(tenantId, role);
     }
 }
