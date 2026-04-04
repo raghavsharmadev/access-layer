@@ -12,9 +12,11 @@ import com.rs.accesslayer.utitlity.JwtUtility;
 @Service
 public class UserService {
     @Autowired private UserRepository userRepository;
+    @Autowired private AuditService auditService;
 
     public User createUser(final User user, final String authHeader) {
         String token = authHeader.replace("Bearer ", "");
+        Long userId = JwtUtility.extractUserId(token);
         String role = JwtUtility.extractRole(token);
         Long tenantId = JwtUtility.extractTenantId(token);
 
@@ -23,7 +25,10 @@ public class UserService {
         }
 
         user.setTenantId(tenantId);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        auditService.log(userId, "CREATE_USER", savedUser.getRole(), savedUser.getId(), tenantId);
+        return savedUser;
     }
 
     public List<User> getAllUsers() {

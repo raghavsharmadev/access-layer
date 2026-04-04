@@ -17,12 +17,18 @@ public class JwtUtility {
     public static String generateToken(final User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("userId", user.getId())
                 .claim("role", user.getRole())
                 .claim("tenantId", user.getTenantId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
+    }
+
+    public static Long extractUserId(final String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).build().parseSignedClaims(token).getPayload();
+        return claims.get("userId", Long.class);
     }
 
     public static String extractRole(final String token) {
