@@ -2,10 +2,13 @@ spring:
   application:
     name: access_layer
   datasource:
-    url: jdbc:postgresql://localhost:5432/access_layer_db
-    username: postgres
-    password: password
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+jwt:
+  secret: ${JWT_SECRET}
