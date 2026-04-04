@@ -10,4 +10,5 @@ import com.rs.accesslayer.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByTenantId(Long tenantId);
+    List<User> findByEmail(String email);
 }

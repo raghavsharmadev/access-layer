@@ -7,12 +7,17 @@ import org.springframework.stereotype.Service;
 
 import com.rs.accesslayer.entity.User;
 import com.rs.accesslayer.repository.UserRepository;
+import com.rs.accesslayer.utitlity.JwtUtility;
 
 @Service
 public class UserService {
     @Autowired private UserRepository userRepository;
 
-    public User createUser(final User user, final Long tenantId, final String role) {
+    public User createUser(final User user, final String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String role = JwtUtility.extractRole(token);
+        Long tenantId = JwtUtility.extractTenantId(token);
+
         if(!"ADMIN".equals(role)) {
             throw new RuntimeException("Access denied: Only ADMIN can create users");
         }
@@ -25,7 +30,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUsersByTenant(final Long tenantId, final String role) {
+    public List<User> getUsersByTenant(final String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String role = JwtUtility.extractRole(token);
+        Long tenantId = JwtUtility.extractTenantId(token);
+        
         if(!"ADMIN".equals(role)) {
             throw new RuntimeException("Access denied: Only ADMIN can fetch users");
         }
