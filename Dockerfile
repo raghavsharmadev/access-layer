@@ -6,4 +6,4 @@ RUN gradle build -x test --no-daemon
 FROM openjdk:21-ea-slim-buster
 WORKDIR /app
 COPY --from=builder /app/build/libs/access-layer-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+ENTRYPOINT [ "java", "-jar", "/app/app.jar" ]
