@@ -37,12 +37,15 @@ public class UserService {
 
     public List<User> getUsersByTenant(final String authHeader) {
         String token = authHeader.replace("Bearer ", "");
+        Long userId = JwtUtility.extractUserId(token);
         String role = JwtUtility.extractRole(token);
         Long tenantId = JwtUtility.extractTenantId(token);
         
         if(!"ADMIN".equals(role)) {
             throw new RuntimeException("Access denied: Only ADMIN can fetch users");
         }
+
+        auditService.log(userId, "VIEW_USERS", "USER", null, tenantId);
         return userRepository.findByTenantId(tenantId);
     }
 }
