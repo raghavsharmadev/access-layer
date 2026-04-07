@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rs.accesslayer.entity.User;
+import com.rs.accesslayer.model.ResponseModel;
 import com.rs.accesslayer.service.UserService;
 
 @RestController
@@ -17,12 +18,12 @@ public class UserController {
     @Autowired private UserService userService;
 
     @PostMapping(path = "/users")
-    public User createUser(@RequestBody final User user, @RequestHeader("Authorization") final String authHeader) {
-        return userService.createUser(user, authHeader);
+    public ResponseModel createUser(@RequestBody final User user, @RequestHeader("Authorization") final String authHeader) {
+        return ResponseModel.success(userService.createUser(user, authHeader));
     }
 
     @GetMapping(path = "/users")
-    public List<User> getAllUsers(@RequestHeader("Authorization") final String authHeader) {
-        return userService.getUsersByTenant(authHeader);
+    public ResponseModel getAllUsers(@RequestHeader("Authorization") final String authHeader) {
+        return ResponseModel.success(userService.getUsersByTenant(authHeader));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rs.accesslayer.entity.AuditLog;
+import com.rs.accesslayer.exception.AccessDeniedException;
 import com.rs.accesslayer.repository.AuditLogRepository;
 import com.rs.accesslayer.utitlity.JwtUtility;
 
@@ -34,7 +35,7 @@ public class AuditService {
         String role = JwtUtility.extractRole(token);
 
         if(!"ADMIN".equals(role)) {
-            throw new  RuntimeException("Only ADMIN can access audit logs");
+            throw new AccessDeniedException("Only ADMIN can access audit logs");
         }
 
         return auditLogRepository.findByTenantId(tenantId);

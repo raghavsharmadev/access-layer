@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.rs.accesslayer.entity.Auth;
 import com.rs.accesslayer.entity.User;
+import com.rs.accesslayer.exception.InvalidInputException;
 import com.rs.accesslayer.repository.UserRepository;
 import com.rs.accesslayer.utitlity.JwtUtility;
 
@@ -20,6 +21,6 @@ public class AuthService {
             return JwtUtility.generateToken(user);
         }
         auditService.log(user.getId(), "FALED_LOGIN_USER", "ADMIN", null, user.getTenantId());
-        return "No password match"; 
+        throw new InvalidInputException("Invalid email or password");
     }
 }
