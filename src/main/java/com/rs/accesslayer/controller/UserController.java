@@ -13,12 +13,14 @@ import com.rs.accesslayer.entity.User;
 import com.rs.accesslayer.model.ResponseModel;
 import com.rs.accesslayer.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
     @Autowired private UserService userService;
 
     @PostMapping(path = "/users")
-    public ResponseModel createUser(@RequestBody final User user, @RequestHeader("Authorization") final String authHeader) {
+    public ResponseModel createUser(@Valid @RequestBody final User user, @RequestHeader("Authorization") final String authHeader) {
         return ResponseModel.success(userService.createUser(user, authHeader));
     }
 
