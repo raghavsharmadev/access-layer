@@ -4,6 +4,35 @@
 
 The Access Layer API is a multi-tenant backend service built with Spring Boot that provides secure access management for applications. It handles user authentication, authorization, tenant management, and audit logging to support scalable, secure multi-tenant architectures.
 
+## Architecture Diagram
+
+```mermaid
+graph TB
+    A[Client Applications] --> B[API Gateway / Load Balancer]
+    B --> C[Spring Boot Application]
+    
+    C --> D[Controllers]
+    D --> E[Services]
+    E --> F[Repositories]
+    F --> G[(PostgreSQL Database)]
+    
+    E --> H[JWT Utility]
+    D --> I[Security Layer]
+    E --> J[Audit Service]
+    
+    subgraph "Multi-Tenant Context"
+        K[Tenant 1]
+        L[Tenant 2]
+        M[Tenant N]
+    end
+    
+    G --> K
+    G --> L
+    G --> M
+```
+
+This diagram illustrates the high-level architecture of the Access Layer API, showing the flow from client requests through the Spring Boot layers to the database, with multi-tenant support and security components.
+
 ## Features
 
 - **Authentication & Authorization**: JWT-based login and token validation
